@@ -3,6 +3,9 @@ package edu.pdx.cs410J.dcobbley;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by david on 7/6/15.
@@ -11,8 +14,9 @@ import java.io.IOException;
 public class phonecall extends AbstractPhoneCall {
     String callerNumber;
     String calleeNumber;
-    String startTime;
-    String endTime;
+    Date startTime;
+    Date endTime;
+    DateFormat dateFormat;
 
     /**
      * Constructor for the phonecall class. Holds all relavent data for a particular phonecall
@@ -22,6 +26,7 @@ public class phonecall extends AbstractPhoneCall {
      * @param endTime The time at which the phonecall ended
      */
     phonecall(String callerNumber, String calleeNumber, String startTime, String endTime){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd//yyyy HH:mm:ss");
         //Check for bad data
         try{
             if(startTime.contains("\"")||endTime.contains("\""))
@@ -48,18 +53,34 @@ public class phonecall extends AbstractPhoneCall {
 
         this.callerNumber = callerNumber;
         this.calleeNumber = calleeNumber;
-        this.startTime = startTime;
-        this.endTime = endTime;
-//        System.out.println("Debug:");
-//        System.out.println(endTime);
+        setDate(startTime,endTime);
+        //this.startTime = startTime;
+        //this.endTime = endTime;
+        System.out.println(startTime);
+        System.out.println(endTime);
+        System.out.println();
     }
     phonecall(){
-        calleeNumber ="";
-        callerNumber ="";
-        startTime ="";
-        endTime = "";
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd//yyyy HH:mm:ss");
+        try {
+            calleeNumber = "";
+            callerNumber = "";
+            startTime =null;
+            endTime = null;
+        }
+        catch(Exception ex){
+            System.out.println(ex);
+            System.exit(1);
+        }
     }
 
+    public void setDate(String start, String end){
+        String[] startArray= start.split("[ /:]");
+        String[] endArray=end.split("[ /:]");
+
+        this.startTime = new Date(Integer.parseInt(startArray[2])-1900, Integer.parseInt(startArray[0]), Integer.parseInt(startArray[1]),Integer.parseInt(startArray[3]),Integer.parseInt(startArray[4]),0);
+        this.endTime = new Date(Integer.parseInt(endArray[2])-1900, Integer.parseInt(endArray[0]), Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
+    }
     /**
      *
      * @return Returns callerNumber - Getter function
@@ -84,7 +105,7 @@ public class phonecall extends AbstractPhoneCall {
      */
     @Override
     public String getStartTimeString() {
-        return startTime;
+        return (dateFormat.format(startTime));
     }
 
     /**
@@ -93,6 +114,6 @@ public class phonecall extends AbstractPhoneCall {
      */
     @Override
     public String getEndTimeString() {
-        return endTime;
+        return (dateFormat.format(endTime));
     }
 }

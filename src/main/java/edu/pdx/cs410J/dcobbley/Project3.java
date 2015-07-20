@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class Project3 {
     //Constants
-    private static final int MAXARGUMENTS = 3;//Update this value if we get more than -readme -print -textFile
+    private static final int MAXARGUMENTS = 4;//Update this value if we get more than -readme -print -textFile
     //Global variables
     static ArrayList<String> commands; //used to keep track of all the commands that will be run at the end of the program
     static phonebill MyPhoneBill;
@@ -75,6 +75,17 @@ public class Project3 {
                         } else {
                             //throw error
                             throw new IllegalArgumentException("-textFile argument must be followed by <filename>");
+                        }
+                        break;
+                    case "-pretty":
+                        //check for ++element
+                        if (args.length > element + 1) {
+                            //save -textfile Filename
+                            addArgumentCommand("pretty");
+                            addArgumentCommand(args[++element]);
+                        } else {
+                            //throw error
+                            throw new IllegalArgumentException("-pretty argument must be followed by <filename>");
                         }
                         break;
                     default:
@@ -176,6 +187,17 @@ public class Project3 {
                             throw new Exception("-textFile argument must be followed by <filename>");
                         }
                         break;
+                    case "pretty":
+                        //check for ++element
+                        if (args.length > element + 1) {
+                            //save -textfile Filename
+                            addArgumentCommand("pretty");
+                            addArgumentCommand(args[++element]);
+                        } else {
+                            //throw error
+                            throw new Exception("-pretty argument must be followed by <filename>");
+                        }
+                        break;
                     default:
                         //throw error, cannot exist
                         throw new Exception("Not a valid command");
@@ -213,7 +235,9 @@ public class Project3 {
         boolean printFlag = false;
         boolean textFileFlag = false;
         boolean ReadmeFlag = false;
+        boolean pretty = false;
         String fileName=null;
+        String prettyName=null;
         //Begin executing commands
         //check if the commands exist and execute in this order.
         //textFile-
@@ -228,15 +252,20 @@ public class Project3 {
                 switch(comm){
                     case "textFile":
                         textFileFlag=true;
+                        fileName = commands.get(commands.indexOf(comm)+1);
                     break;
                     case "-README":
                         ReadmeFlag = true;
                     break;
                     case "-print":
                         printFlag = true;
-                    break;
+                        prettyName = commands.get(commands.indexOf(comm)+1);
+                        break;
+                    case "-pretty":
+                        pretty = true;
+                        break;
                     default:
-                        fileName = comm;
+                        //fileName = comm;
                         break;
 
                 }
@@ -266,6 +295,21 @@ public class Project3 {
 
             System.exit(1);
         }
+    }
+
+    private static void prettyPrintFunction(String path){
+        try{
+            if(path == null)
+                throw new IllegalArgumentException("Path name missing");
+
+
+
+
+        }
+        catch(IllegalArgumentException ex){
+
+        }
+
     }
 
     private static void textFileFunction(String path){

@@ -31,6 +31,11 @@ public class Project3Test extends InvokeMainTestCase {
 //        System.out.println(result.getOut());
 //    }
 
+    @Test
+    public void TestTest(){
+        MainMethodResult result = invokeMain("Test8","123-456-7890","234-567-8901","03/03/2015","12:00","05/04/2015","16:00");
+        System.out.println(result.getOut());
+    }
 
   @Test
     public void TestPrintingOutAPhoneCall(){
