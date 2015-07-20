@@ -1,4 +1,4 @@
-/** Description of Project2
+/** Description of Project3
         *
         * @author David Cobbley
         * @version 1.0 July 7, 2015.
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Project2 {
+public class Project3 {
     //Constants
     private static final int MAXARGUMENTS = 3;//Update this value if we get more than -readme -print -textFile
     //Global variables
@@ -331,7 +331,7 @@ public class Project2 {
         System.out.println("This program is a phonebill application which takes a very specific amount of arguments");
         System.out.println("You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)");
         System.out.println();
-        System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+        System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
                 "args are (in this order):\n" +
                 "customer               Person whose phone bill we’re modeling\n" +
                 "callerNumber           Phone number of caller\n" +

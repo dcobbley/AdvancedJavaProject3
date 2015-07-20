@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.dcobbley;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import edu.pdx.cs410J.InvokeMainTestCase;
@@ -13,15 +12,15 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Tests the functionality in the {@link Project2} main class.
+ * Tests the functionality in the {@link Project3} main class.
  */
-public class Project2Test extends InvokeMainTestCase {
+public class Project3Test extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project2} with the given arguments.
+     * Invokes the main method of {@link Project3} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project2.class, args );
+        return invokeMain( Project3.class, args );
     }
 //      /*
 //    @Test
@@ -113,7 +112,7 @@ public class Project2Test extends InvokeMainTestCase {
               "This program is a phonebill application which takes a very specific amount of arguments\n" +
               "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
               "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
               "args are (in this order):\n" +
               "customer               Person whose phone bill we’re modeling\n" +
               "callerNumber           Phone number of caller\n" +
@@ -222,7 +221,7 @@ public class Project2Test extends InvokeMainTestCase {
               "This program is a phonebill application which takes a very specific amount of arguments\n" +
               "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
               "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
               "args are (in this order):\n" +
               "customer               Person whose phone bill we’re modeling\n" +
               "callerNumber           Phone number of caller\n" +
@@ -247,7 +246,7 @@ public class Project2Test extends InvokeMainTestCase {
                 "This program is a phonebill application which takes a very specific amount of arguments\n" +
                 "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
                 "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
                 "args are (in this order):\n" +
                 "customer               Person whose phone bill we’re modeling\n" +
                 "callerNumber           Phone number of caller\n" +
@@ -271,7 +270,7 @@ public class Project2Test extends InvokeMainTestCase {
               "This program is a phonebill application which takes a very specific amount of arguments\n" +
               "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
               "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
               "args are (in this order):\n" +
               "customer               Person whose phone bill we’re modeling\n" +
               "callerNumber           Phone number of caller\n" +
@@ -304,7 +303,7 @@ public class Project2Test extends InvokeMainTestCase {
                 "This program is a phonebill application which takes a very specific amount of arguments\n" +
                 "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
                 "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
                 "args are (in this order):\n" +
                 "customer               Person whose phone bill we’re modeling\n" +
                 "callerNumber           Phone number of caller\n" +
@@ -328,7 +327,7 @@ public class Project2Test extends InvokeMainTestCase {
                 "This program is a phonebill application which takes a very specific amount of arguments\n" +
                 "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
                 "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
+                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
                 "args are (in this order):\n" +
                 "customer               Person whose phone bill we’re modeling\n" +
                 "callerNumber           Phone number of caller\n" +
