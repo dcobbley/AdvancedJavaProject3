@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.3" timestamp="2015-07-08T14:52:47.381">
+<file name="/home/david/Documents/advnacedJava/project1/phonebill/src/main/java/edu/pdx/cs410J/dcobbley/Project1.java">
+<violation beginline="13" endline="13" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statement Rules" package="edu.pdx.cs410J.dcobbley" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'java.lang.reflect.Array'
+</violation>
+<violation beginline="14" endline="14" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statement Rules" package="edu.pdx.cs410J.dcobbley" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'java.util.ArrayList'
+</violation>
+<violation beginline="15" endline="15" begincolumn="1" endcolumn="28" rule="UnusedImports" ruleset="Import Statement Rules" package="edu.pdx.cs410J.dcobbley" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'java.util.Collection'
+</violation>
+<violation beginline="16" endline="16" begincolumn="1" endcolumn="22" rule="UnusedImports" ruleset="Import Statement Rules" package="edu.pdx.cs410J.dcobbley" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'java.util.List'
+</violation>
+<violation beginline="33" endline="33" begincolumn="11" endcolumn="11" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="edu.pdx.cs410J.dcobbley" class="Project1" method="main" variable="c" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'c'.
+</violation>
+</file>
+</pmd>

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/** Description of Project1<a name="line.1"></a>
+<span class="sourceLineNo">002</span>        *<a name="line.2"></a>
+<span class="sourceLineNo">003</span>        * @author David Cobbley<a name="line.3"></a>
+<span class="sourceLineNo">004</span>        * @version 1.0 July 7, 2015.<a name="line.4"></a>
+<span class="sourceLineNo">005</span>        *Phonebill application for Advanced Java course at Portland State University<a name="line.5"></a>
+<span class="sourceLineNo">006</span>        * The main class for the CS410J Phone Bill Project<a name="line.6"></a>
+<span class="sourceLineNo">007</span>        * Parses the command line and calls appropriate functionality.<a name="line.7"></a>
+<span class="sourceLineNo">008</span>        */<a name="line.8"></a>
+<span class="sourceLineNo">009</span>package edu.pdx.cs410J.dcobbley;<a name="line.9"></a>
+<span class="sourceLineNo">010</span><a name="line.10"></a>
+<span class="sourceLineNo">011</span>import edu.pdx.cs410J.AbstractPhoneBill;<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>import java.lang.reflect.Array;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import java.util.ArrayList;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import java.util.Collection;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import java.util.List;<a name="line.16"></a>
+<span class="sourceLineNo">017</span><a name="line.17"></a>
+<span class="sourceLineNo">018</span>public class Project1 {<a name="line.18"></a>
+<span class="sourceLineNo">019</span><a name="line.19"></a>
+<span class="sourceLineNo">020</span>  static phonebill myPhoneBill;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>  static String customer;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>  static String callerNumber;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>  static String calleeNumber;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>  static String startTime;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>  static String endTime;<a name="line.25"></a>
+<span class="sourceLineNo">026</span><a name="line.26"></a>
+<span class="sourceLineNo">027</span>  /**<a name="line.27"></a>
+<span class="sourceLineNo">028</span>   * Main will be called when the program is run, it parses the commands given by the user and calls the appropriate functionality.<a name="line.28"></a>
+<span class="sourceLineNo">029</span>   * @param args contains all the command line arguments passed into the program<a name="line.29"></a>
+<span class="sourceLineNo">030</span>   * @throws IllegalArgumentException Exception if there is either not enough arguments or the wrong arguments<a name="line.30"></a>
+<span class="sourceLineNo">031</span>   */<a name="line.31"></a>
+<span class="sourceLineNo">032</span>  public static void main(String[] args) {<a name="line.32"></a>
+<span class="sourceLineNo">033</span>    Class c = AbstractPhoneBill.class;  // Refer to one of Dave's classes so that we can be sure it is on the classpath<a name="line.33"></a>
+<span class="sourceLineNo">034</span>      try {<a name="line.34"></a>
+<span class="sourceLineNo">035</span>          if (args.length == 0) //Check if there are no arguments<a name="line.35"></a>
+<span class="sourceLineNo">036</span>              throw new IllegalArgumentException("Missing command line arguments");<a name="line.36"></a>
+<span class="sourceLineNo">037</span>          if(args.length == 1 &amp;&amp; args[0].contains("-README")){<a name="line.37"></a>
+<span class="sourceLineNo">038</span>              Readme();<a name="line.38"></a>
+<span class="sourceLineNo">039</span>              System.exit(0);<a name="line.39"></a>
+<span class="sourceLineNo">040</span>          }<a name="line.40"></a>
+<span class="sourceLineNo">041</span>          else if (args.length &lt; 6) //Check if there are not enough arguments to be a complete phonecall<a name="line.41"></a>
+<span class="sourceLineNo">042</span>              throw new IllegalArgumentException("Not enough args");      }<a name="line.42"></a>
+<span class="sourceLineNo">043</span>      catch(IllegalArgumentException ex)<a name="line.43"></a>
+<span class="sourceLineNo">044</span>      {<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        System.out.println(ex.getMessage());<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        System.out.println("Usage: java edu.pdx.cs410J.&lt;login-id&gt;.Project1 [options] &lt;args&gt;\n" +<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                "   args are (in this order):\n" +<a name="line.47"></a>
+<span class="sourceLineNo">048</span>                "       customer               Person whose phone bill we’re modeling\n" +<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                "       callerNumber           Phone number of caller\n" +<a name="line.49"></a>
+<span class="sourceLineNo">050</span>                "       calleeNumber           Phone number of person who was called\n" +<a name="line.50"></a>
+<span class="sourceLineNo">051</span>                "       startTime              Date and time call began (24-hour time)\n" +<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                "       endTime                Date and time call ended (24-hour time)\n" +<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                "   options are (options may appear in any order):\n" +<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                "       -print                 Prints a description of the new phone call\n" +<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                "       -README                Prints a README for this project and exits\n" +<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                "   Date and time should be in the format: mm/dd/yyyy hh:mm");<a name="line.56"></a>
+<span class="sourceLineNo">057</span>        System.exit(1);<a name="line.57"></a>
+<span class="sourceLineNo">058</span>      }<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>    /**<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * These variables are used to temporarily store the data passed into the program<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     * Not as efficient to store the data just to pass it into a new function, but if data needs to be scrubbed first...<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     * @param myPhoneBill Used to store a new instance of the phonebill for a particular customer<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * @param customer Customer name<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     * @param callerNumber Customer number<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     * @param calleeNumber Number the customer is trying to contact<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * @param startTime Time the phonecall began<a name="line.67"></a>
+<span class="sourceLineNo">068</span>     * @param endTime Time the phonecall ended<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     */<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>    try{<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    customer = args[0];<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    callerNumber = args[1];<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    calleeNumber = args[2];<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    startTime = args[3] + " ";<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    startTime += args[4];<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    endTime = args[5] + " ";<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    endTime += args[6];<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>    if(startTime.contains("\"")||endTime.contains("\""))<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        throw new IllegalArgumentException("Date and time cannot contain quotes ");<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    if(!callerNumber.matches("\\d{3}-\\d{3}-\\d{4}$")||!calleeNumber.matches("\\d{3}-\\d{3}-\\d{4}$"))<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        throw new IllegalArgumentException("Phone numbers must contain exactly 10 digits plus two dashes");<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    if(!args[3].matches("(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/((19|20)\\d\\d)")||!args[5].matches("(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])/((19|20)\\d\\d)"))<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        throw new IllegalArgumentException("Date format must follow mm/dd/yyyy");<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    if(!args[4].matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")||!args[6].matches("([01]?[0-9]|2[0-3]):[0-5][0-9]"))<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        throw new IllegalArgumentException("Time format must follow mm:hh (24 hour time)");<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    catch (IllegalArgumentException ex){<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        System.out.println(args[3]);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        System.out.println(ex.getMessage());<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        System.exit(1);<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    //Create a new instance of Phonebill with a new phonecall. When we have persistent data, this line will change.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    myPhoneBill = new phonebill(customer, new phonecall(callerNumber, calleeNumber, startTime, endTime));<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>    /**This is a bit clunky, could use improvement.<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    * If there are extra argument after those needed for a phone call, check if they are the print or the README option<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    * Break if there are more than 8 arguments total.<a name="line.101"></a>
+<span class="sourceLineNo">102</span>     */<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    try {<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        for (int x = 7; x &lt; args.length; x++) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            if (x &gt; 8)<a name="line.105"></a>
+<span class="sourceLineNo">106</span>                break;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>            switch (args[x]) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>                case "-README":<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                    Readme();<a name="line.109"></a>
+<span class="sourceLineNo">110</span>                    break;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>                case "-print":<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                    System.out.println("Customer: " + myPhoneBill.getCustomer() + " " + myPhoneBill.getPhoneCalls());<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                    break;<a name="line.113"></a>
+<span class="sourceLineNo">114</span>                default:<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                    throw new IllegalArgumentException("Command Line Argument not found: \"" + args[x] +"\"");<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            }<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    }<a name="line.118"></a>
+<span class="sourceLineNo">119</span>    catch(IllegalArgumentException ex){<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        System.out.println(ex.getMessage());<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        System.exit(1);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
+<span class="sourceLineNo">123</span>    System.exit(0);<a name="line.123"></a>
+<span class="sourceLineNo">124</span>  }<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>    /**<a name="line.126"></a>
+<span class="sourceLineNo">127</span>     * Readme function contains the readme of all useful information the user may need to know.<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     */<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    private static void Readme() {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        System.out.println("README has been called");<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        System.out.println("This program is a phonebill application which takes a very specific amount of arguments");<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        System.out.println("You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)");<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        System.out.println();<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        System.out.println("Usage: java edu.pdx.cs410J.&lt;login-id&gt;.Project1 [options] &lt;args&gt;\n" +<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                "   args are (in this order):\n" +<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                "       customer               Person whose phone bill we’re modeling\n" +<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                "       callerNumber           Phone number of caller\n" +<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                "       calleeNumber           Phone number of person who was called\n" +<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                "       startTime              Date and time call began (24-hour time)\n" +<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                "       endTime                Date and time call ended (24-hour time)\n" +<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                "   options are (options may appear in any order):\n" +<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                "       -print                 Prints a description of the new phone call\n" +<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                "       -README                Prints a README for this project and exits\n" +<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                "   Date and time should be in the format: mm/dd/yyyy hh:mm");<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    }<a name="line.145"></a>
+<span class="sourceLineNo">146</span><a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>}<a name="line.148"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
