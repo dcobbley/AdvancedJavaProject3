@@ -70,7 +70,7 @@ public class Project3 {
                         //check for ++element
                         if (args.length > element + 1) {
                             //save -textfile Filename
-                            addArgumentCommand("textFile");
+                            addArgumentCommand("-textFile");
                             addArgumentCommand(args[++element]);
                         } else {
                             //throw error
@@ -81,7 +81,7 @@ public class Project3 {
                         //check for ++element
                         if (args.length > element + 1) {
                             //save -textfile Filename
-                            addArgumentCommand("pretty");
+                            addArgumentCommand("-pretty");
                             addArgumentCommand(args[++element]);
                         } else {
                             //throw error
@@ -180,18 +180,18 @@ public class Project3 {
                         //check for ++element
                         if (args.length > element + 1) {
                             //save -textfile Filename
-                            addArgumentCommand("textFile");
+                            addArgumentCommand("-textFile");
                             addArgumentCommand(args[++element]);
                         } else {
                             //throw error
                             throw new Exception("-textFile argument must be followed by <filename>");
                         }
                         break;
-                    case "pretty":
+                    case "-pretty":
                         //check for ++element
                         if (args.length > element + 1) {
                             //save -textfile Filename
-                            addArgumentCommand("pretty");
+                            addArgumentCommand("-pretty");
                             addArgumentCommand(args[++element]);
                         } else {
                             //throw error
@@ -251,7 +251,7 @@ public class Project3 {
         try {
             for (String comm : commands) {
                 switch(comm){
-                    case "textFile":
+                    case "-textFile":
                         textFileFlag=true;
                         fileName = commands.get(commands.indexOf(comm)+1);
                     break;
@@ -285,6 +285,9 @@ public class Project3 {
             }
             if(ReadmeFlag){
                 Readme();
+            }
+            if(pretty){
+                prettyPrintFunction(prettyName);
             }
         }
         catch(Exception ex)
