@@ -4,7 +4,6 @@ import edu.pdx.cs410J.AbstractPhoneBill;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.PhoneBillParser;
 import org.omg.CORBA.SystemException;
-import sun.plugin.dom.core.Text;
 
 import java.io.*;
 

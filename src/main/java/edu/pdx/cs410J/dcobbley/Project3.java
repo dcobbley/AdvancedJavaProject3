@@ -207,6 +207,7 @@ public class Project3 {
 
             }
             //no args left to parse, begin execution
+
             executeCommands();
         }
         catch(Exception ex){
@@ -259,10 +260,10 @@ public class Project3 {
                     break;
                     case "-print":
                         printFlag = true;
-                        prettyName = commands.get(commands.indexOf(comm)+1);
                         break;
                     case "-pretty":
                         pretty = true;
+                        prettyName = commands.get(commands.indexOf(comm)+1);
                         break;
                     default:
                         //fileName = comm;
@@ -292,12 +293,16 @@ public class Project3 {
                 System.out.println(ex.getMessage());
                 Readme();
             }
+            else{
+                System.out.println("Please Delete Empty File");
+            }
 
             System.exit(1);
         }
     }
 
     private static void prettyPrintFunction(String path){
+        System.out.println("PRETTY PRINT CALLED");
         try{
             if(path == null)
                 throw new IllegalArgumentException("Path name missing");

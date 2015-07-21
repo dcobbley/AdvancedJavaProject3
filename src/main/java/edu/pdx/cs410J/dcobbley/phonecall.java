@@ -26,7 +26,7 @@ public class phonecall extends AbstractPhoneCall {
      * @param endTime The time at which the phonecall ended
      */
     phonecall(String callerNumber, String calleeNumber, String startTime, String endTime){
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd//yyyy HH:mm:ss");
+        dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
         //Check for bad data
         try{
             if(startTime.contains("\"")||endTime.contains("\""))
@@ -54,14 +54,10 @@ public class phonecall extends AbstractPhoneCall {
         this.callerNumber = callerNumber;
         this.calleeNumber = calleeNumber;
         setDate(startTime,endTime);
-        //this.startTime = startTime;
-        //this.endTime = endTime;
-        System.out.println(startTime);
-        System.out.println(endTime);
-        System.out.println();
+
     }
     phonecall(){
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd//yyyy HH:mm:ss");
+        dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
         try {
             calleeNumber = "";
             callerNumber = "";
@@ -78,8 +74,8 @@ public class phonecall extends AbstractPhoneCall {
         String[] startArray= start.split("[ /:]");
         String[] endArray=end.split("[ /:]");
 
-        this.startTime = new Date(Integer.parseInt(startArray[2])-1900, Integer.parseInt(startArray[0]), Integer.parseInt(startArray[1]),Integer.parseInt(startArray[3]),Integer.parseInt(startArray[4]),0);
-        this.endTime = new Date(Integer.parseInt(endArray[2])-1900, Integer.parseInt(endArray[0]), Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
+        this.startTime = new Date(Integer.parseInt(startArray[2])-1900, (Integer.parseInt(startArray[0]))-1, Integer.parseInt(startArray[1]),Integer.parseInt(startArray[3]),Integer.parseInt(startArray[4]),0);
+        this.endTime = new Date(Integer.parseInt(endArray[2])-1900, (Integer.parseInt(endArray[0]))-1, Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
     }
     /**
      *
@@ -105,7 +101,10 @@ public class phonecall extends AbstractPhoneCall {
      */
     @Override
     public String getStartTimeString() {
-        return (dateFormat.format(startTime));
+        if(startTime != null)
+            return (dateFormat.format(startTime));
+        else
+            return "";
     }
 
     /**
@@ -114,6 +113,9 @@ public class phonecall extends AbstractPhoneCall {
      */
     @Override
     public String getEndTimeString() {
-        return (dateFormat.format(endTime));
+        if(endTime != null)
+            return (dateFormat.format(endTime));
+        else
+            return "";
     }
 }
