@@ -366,7 +366,7 @@ public class Project3Test extends InvokeMainTestCase {
         assertEquals(new Integer(0), result.getExitCode());
         MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-555-7777", "10/17/2015", "10:18", "10/17/2015", "10:40", "-textFile", "DavesBill", "-print");
         assertEquals(new Integer(0), anotherResult.getExitCode());
-        assertEquals(anotherResult.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42]");
+        assertEquals(anotherResult.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40]");
 
         BufferedReader reader = null;
         try{
@@ -386,9 +386,10 @@ public class Project3Test extends InvokeMainTestCase {
             Date date = new Date();
             assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
                     "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42\n" +
+                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40");
         }
+
         catch(IOException ex){
             System.out.println("Error Reading From File " + ex.getMessage());
         }finally {
@@ -741,10 +742,59 @@ public class Project3Test extends InvokeMainTestCase {
         System.out.println("Test Number 28");
     }
 
+    @Test
+    public void TestSortingPhoneCallsByDate(){
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+        MainMethodResult result4 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "12:38", "10/15/2015", "13:42", "-textFile", "DavesBill");
+        MainMethodResult result3 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/17/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+
+        MainMethodResult result = invokeMain("-textFile", "DavesBill", "-print");
+        assertEquals(result.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/17/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 12:38 to 10/15/2015 13:42]");
+
+        System.out.println(result.getOut());
+        assertEquals(new Integer(0), result.getExitCode());
+    }
+
+    @Test
+    public void TestSortingPhoneCallsByNumber(){
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+        MainMethodResult result33 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:52", "-textFile", "DavesBill");
+
+        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:32", "-textFile", "DavesBill");
+        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result3 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:22", "-textFile", "DavesBill");
+        MainMethodResult result4 = invokeMain("david", "503-555-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "13:42", "-textFile", "DavesBill");
+
+        MainMethodResult result = invokeMain("-textFile", "DavesBill", "-print");
+        assertEquals(new Integer(0), result.getExitCode());
+        assertEquals(result.getOut(), "Customer: david [Phone call from 503-555-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 13:42, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:32, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:22, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:52]\n");
+        //System.out.println(result.getOut());
+    }
 
 
 
-    /*
     /*
     @Test
     public void Test(){

@@ -12,7 +12,7 @@ import java.util.*;
 
 public class phonebill extends AbstractPhoneBill{
     String customer;
-    ArrayList<AbstractPhoneCall> phoneCalls;
+    ArrayList<phonecall> phoneCalls;
 
     /**
      * Constructor is essentially a setter function. creates a new list which will hold all additional phonecalls.
@@ -22,19 +22,19 @@ public class phonebill extends AbstractPhoneBill{
     phonebill(String customer, phonecall phoneCall)
     {
         this.customer = customer;
-        phoneCalls = new ArrayList<AbstractPhoneCall>();
+        phoneCalls = new ArrayList<phonecall>();
         addPhoneCall(phoneCall);
     }
     phonebill(String customer)
     {
         this.customer = customer;
-        phoneCalls = new ArrayList<AbstractPhoneCall>();
+        phoneCalls = new ArrayList<phonecall>();
     }
     phonebill()
     {
         //Create an empty phonebill
         customer = "";
-        phoneCalls = new ArrayList<AbstractPhoneCall>();
+        phoneCalls = new ArrayList<phonecall>();
     }
 
     /**
@@ -54,15 +54,16 @@ public class phonebill extends AbstractPhoneBill{
     public void addPhoneCall(AbstractPhoneCall abstractPhoneCall) {
         boolean addPhoneCall = true;
         for(AbstractPhoneCall call:phoneCalls){
-            if(call.toString().equals(abstractPhoneCall.toString()))
+            if(call.toString().equals(abstractPhoneCall.toString())) {
                 addPhoneCall = false;
+            }
         }
         if(addPhoneCall) {
-                phoneCalls.add(abstractPhoneCall);
+                phoneCalls.add((phonecall)abstractPhoneCall);
         }
-        ArrayList<phonecall> mytemplist = new ArrayList<>();
-        phoneCalls.sort((Objects)abstractPhoneCall);
-        //Collections.sort(phoneCalls);
+
+        Collections.sort(phoneCalls);
+
 
     }
 

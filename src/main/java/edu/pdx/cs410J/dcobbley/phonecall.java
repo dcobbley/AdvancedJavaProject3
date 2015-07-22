@@ -12,7 +12,7 @@ import java.util.Objects;
  * Created by david on 7/6/15.
  * A single instance of a phonecall that has occured. Includes a caller and callee number
  */
-public class phonecall extends AbstractPhoneCall implements Comparable{
+public class phonecall extends AbstractPhoneCall implements Comparable<phonecall>{
     String callerNumber;
     String calleeNumber;
     Date startTime;
@@ -175,16 +175,15 @@ public class phonecall extends AbstractPhoneCall implements Comparable{
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(phonecall o) {
         try {
             if (this.startTime == null) {
                 throw new NullPointerException("No start time to compare");
-            }/*
-            if (o.getStartTimeString() == "") {
+            }
+            if (o.startTime == null) {
                 throw new NullPointerException("No end time to compare");
             }
-            Date end = compareSetData(o.getEndTimeString());
-            long diff = this.startTime.getTime()-end.getTime();
+            long diff = this.startTime.getTime()-o.startTime.getTime();
 
             if (diff > 0) {
                 return 1;
@@ -195,7 +194,12 @@ public class phonecall extends AbstractPhoneCall implements Comparable{
             if (diff == 0) {
                 //equal - differ by caller number
                 //String numberDiff = this.callerNumber-o.callerNumber;
-                long numberDiff = Integer.getInteger(this.callerNumber)-Integer.getInteger(o.getCaller());
+                String callerStringA = this.getCaller();
+                String callerStringB = o.getCaller();
+                callerStringA = callerStringA.replaceAll("\\D", "");
+                callerStringB = callerStringB.replaceAll("\\D", "");
+                long numberDiff = Long.parseLong(callerStringA)-Long.parseLong(callerStringB);
+
                 if(numberDiff >0){
                     return 1;
                 }
@@ -203,10 +207,9 @@ public class phonecall extends AbstractPhoneCall implements Comparable{
                     return -1;
                 }
                 if(numberDiff == 0){
-                    //Shouldn't happen
-                    throw new Exception("Duplicate entries detected, shouldn't happen");
+                    return 0;
                 }
-            }*/
+            }
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());
