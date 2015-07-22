@@ -3,10 +3,7 @@ package edu.pdx.cs410J.dcobbley;
 import edu.pdx.cs410J.AbstractPhoneBill;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by david on 7/6/15.
@@ -60,8 +57,13 @@ public class phonebill extends AbstractPhoneBill{
             if(call.toString().equals(abstractPhoneCall.toString()))
                 addPhoneCall = false;
         }
-        if(addPhoneCall)
-            phoneCalls.add(abstractPhoneCall);
+        if(addPhoneCall) {
+                phoneCalls.add(abstractPhoneCall);
+        }
+        ArrayList<phonecall> mytemplist = new ArrayList<>();
+        phoneCalls.sort((Objects)abstractPhoneCall);
+        //Collections.sort(phoneCalls);
+
     }
 
     /**

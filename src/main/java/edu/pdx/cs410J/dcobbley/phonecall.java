@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by david on 7/6/15.
  * A single instance of a phonecall that has occured. Includes a caller and callee number
  */
-public class phonecall extends AbstractPhoneCall {
+public class phonecall extends AbstractPhoneCall implements Comparable{
     String callerNumber;
     String calleeNumber;
     Date startTime;
@@ -50,11 +51,9 @@ public class phonecall extends AbstractPhoneCall {
             System.exit(1);
         }
 
-
         this.callerNumber = callerNumber;
         this.calleeNumber = calleeNumber;
         setDate(startTime,endTime);
-
     }
     phonecall(){
         dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
@@ -127,5 +126,92 @@ public class phonecall extends AbstractPhoneCall {
             return -1*diffMinutes + " minutes";
         else
             return "  "+-1*diffHours+":"+ -1*diffMinutes +"min";
+    }
+
+
+
+    public Date compareSetData(String end){
+        String[] endArray=end.split("[ /:]");
+        Date mine = new Date(Integer.parseInt(endArray[2])-1900, (Integer.parseInt(endArray[0]))-1, Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
+        return mine;
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     * <p>
+     * <p>The implementor must ensure <tt>sgn(x.compareTo(y)) ==
+     * -sgn(y.compareTo(x))</tt> for all <tt>x</tt> and <tt>y</tt>.  (This
+     * implies that <tt>x.compareTo(y)</tt> must throw an exception iff
+     * <tt>y.compareTo(x)</tt> throws an exception.)
+     * <p>
+     * <p>The implementor must also ensure that the relation is transitive:
+     * <tt>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</tt> implies
+     * <tt>x.compareTo(z)&gt;0</tt>.
+     * <p>
+     * <p>Finally, the implementor must ensure that <tt>x.compareTo(y)==0</tt>
+     * implies that <tt>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</tt>, for
+     * all <tt>z</tt>.
+     * <p>
+     * <p>It is strongly recommended, but <i>not</i> strictly required that
+     * <tt>(x.compareTo(y)==0) == (x.equals(y))</tt>.  Generally speaking, any
+     * class that implements the <tt>Comparable</tt> interface and violates
+     * this condition should clearly indicate this fact.  The recommended
+     * language is "Note: this class has a natural ordering that is
+     * inconsistent with equals."
+     * <p>
+     * <p>In the foregoing description, the notation
+     * <tt>sgn(</tt><i>expression</i><tt>)</tt> designates the mathematical
+     * <i>signum</i> function, which is defined to return one of <tt>-1</tt>,
+     * <tt>0</tt>, or <tt>1</tt> according to whether the value of
+     * <i>expression</i> is negative, zero or positive.
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(Object o) {
+        try {
+            if (this.startTime == null) {
+                throw new NullPointerException("No start time to compare");
+            }/*
+            if (o.getStartTimeString() == "") {
+                throw new NullPointerException("No end time to compare");
+            }
+            Date end = compareSetData(o.getEndTimeString());
+            long diff = this.startTime.getTime()-end.getTime();
+
+            if (diff > 0) {
+                return 1;
+            }
+            if (diff < 0) {
+                return -1;
+            }
+            if (diff == 0) {
+                //equal - differ by caller number
+                //String numberDiff = this.callerNumber-o.callerNumber;
+                long numberDiff = Integer.getInteger(this.callerNumber)-Integer.getInteger(o.getCaller());
+                if(numberDiff >0){
+                    return 1;
+                }
+                if(numberDiff<0){
+                    return -1;
+                }
+                if(numberDiff == 0){
+                    //Shouldn't happen
+                    throw new Exception("Duplicate entries detected, shouldn't happen");
+                }
+            }*/
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+            System.exit(1);
+        }
+        return 0;
     }
 }
