@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class Project3 {
     //Constants
-    private static final int MAXARGUMENTS = 4;//Update this value if we get more than -readme -print -textFile
+    private static final int MAXARGUMENTS = 6;//Update this value if we get more than -readme -print -textFile
     //Global variables
     static ArrayList<String> commands; //used to keep track of all the commands that will be run at the end of the program
     static phonebill MyPhoneBill;
@@ -303,7 +303,7 @@ public class Project3 {
                 Readme();
             }
             else{
-                System.out.println("Please Delete Empty File");
+                //System.out.println("Please Delete Empty File");
             }
 
             System.exit(1);
@@ -325,7 +325,8 @@ public class Project3 {
 
         }
         catch(IllegalArgumentException ex){
-
+            System.out.println(ex.getMessage());
+            System.exit(1);
         }
 
     }

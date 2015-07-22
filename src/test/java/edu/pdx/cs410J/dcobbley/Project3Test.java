@@ -2,6 +2,8 @@ package edu.pdx.cs410J.dcobbley;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import edu.pdx.cs410J.InvokeMainTestCase;
 
@@ -127,8 +129,7 @@ public class Project3Test extends InvokeMainTestCase {
       }
       MainMethodResult result = invokeMain("-textFile", "DavesBill");
       assertEquals(new Integer(1), result.getExitCode());
-      assertTrue(result.getOut().trim().equals("Error Reading From File Empty File\n" +
-              "Please Delete Empty File"));
+      assertTrue(result.getOut().trim().equals("Error Reading From File Empty File"));
       System.out.println("Test Number 10");
       try{
           String path = System.getProperty("user.dir") + "/DavesBill.txt";
@@ -403,6 +404,7 @@ public class Project3Test extends InvokeMainTestCase {
     @Test
     public void TestMinutePrettyPrint(){
         MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
+        assertEquals(new Integer(0), result.getExitCode());
 
         BufferedReader reader = null;
         try{
@@ -420,10 +422,7 @@ public class Project3Test extends InvokeMainTestCase {
             //System.out.println(allLines);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            /*assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
-                    "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");*/
+
             assertEquals(allLines.trim(),
                     "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
                     " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
@@ -453,42 +452,179 @@ public class Project3Test extends InvokeMainTestCase {
                 e.printStackTrace();
             }
         }
-
-
-
-
         System.out.println("Test Number 22");
     }
-
 
     @Test
     public void TestNullPrettyPrint(){
         MainMethodResult result = invokeMain("-pretty", "DavesPretty");
-        System.out.println(result.getOut());
+        assertEquals(new Integer(1), result.getExitCode());
+        assertEquals(result.getOut().trim(), "Must supply valid phone bill for pretty print");
         System.out.println("Test Number 23");
     }
-/*
+
     @Test
-    public void TestPrettyPrintWithTextFile(){
+    public void TestPrettyPrintWithNonExistantTextFile(){
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
-        System.out.println(result.getOut());
+        assertEquals(new Integer(1), result.getExitCode());
+        assertEquals(result.getOut().trim(), "Must supply valid phone bill for pretty print");
         System.out.println("Test Number 24");
     }
 
     @Test
-    public void TestAllArguments(){
+    public void TestAllArguments() {
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+        //Delete both davesBill and davesPretty
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty", "-print", "-README");
-        System.out.println(result.getOut());
+
+        assertEquals(result.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42]\n" +
+                "README has been called\n" +
+                "This program is a phonebill application which takes a very specific amount of arguments\n" +
+                "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
+                "\n" +
+                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
+                "args are (in this order):\n" +
+                "customer               Person whose phone bill we’re modeling\n" +
+                "callerNumber           Phone number of caller\n" +
+                "calleeNumber           Phone number of person who was called\n" +
+                "startTime              Date and time call began (24-hour time)\n" +
+                "endTime                Date and time call ended (24-hour time)\n" +
+                "options are (options may appear in any order):\n" +
+                "-textFile file         Where to read/write the phone bill\n" +
+                "-print                 Prints a description of the new phone call\n" +
+                "-README                Prints a README for this project and exits\n" +
+                "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+
+
+        //Now look at external files
+        BufferedReader reader = null;
+        try{
+            String path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            File file = new File(path);
+            reader=new BufferedReader(new FileReader(file));
+            String line;
+            String allLines="";
+            while ((line = reader.readLine()) != null) {
+                allLines+=line +"\n";
+            }
+            if(allLines == "")
+                throw new IOException("Empty File");
+
+            //System.out.println(allLines);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+            assertEquals(allLines.trim(),
+                    "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
+                            " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
+                            " | |__) | |__   ___  _ __   ___  | |_) |_| | |   __) | | | | | | | | | |\n" +
+                            " |  ___/| '_ \\ / _ \\| '_ \\ / _ \\ |  _ <| | | |  |__ <| | | | | | | | | |\n" +
+                            " | |    | | | | (_) | | | |  __/ | |_) | | | |  ___) | |_| | |_| | |_| |\n" +
+                            " |_|    |_| |_|\\___/|_| |_|\\___| |____/|_|_|_| |____/ \\___/ \\___/ \\___/ \n" +
+                            "                                                                        \n" +
+                            "                                                                        \n" +
+                            "   ______           __                                \n" +
+                            "  / ____/_  _______/ /_____  ____ ___  ___  _____   _ \n" +
+                            " / /   / / / / ___/ __/ __ \\/ __ `__ \\/ _ \\/ ___/  (_)\n" +
+                            "/ /___/ /_/ (__  ) /_/ /_/ / / / / / /  __/ /     _   DAVID\n" +
+                            "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
+                            "                                                      \n" +
+                            "#     caller      callee           Start Time        End Time        Duration \n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                            "\n" +
+                            "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
+        }
+        catch(IOException ex){
+            System.out.println("Error Reading From File " + ex.getMessage());
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        reader = null;
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            reader=new BufferedReader(new FileReader(file));
+            String line;
+            String allLines="";
+            while ((line = reader.readLine()) != null) {
+                allLines+=line +"\n";
+            }
+            if(allLines == "")
+                throw new IOException("Empty File");
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+            assertEquals(allLines.trim(),"Created on: "+dateFormat.format(date) +"\n" +
+                    "Customer: david\n" +
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");
+        }
+        catch(IOException ex){
+            System.out.println("Error Reading From File " + ex.getMessage());
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         System.out.println("Test Number 25");
+    }
 
     @Test
     public void TestTextFileReadingPrettyPrint(){
     //add a text file that contains a standard phone bill, then have pretty read from it
-        MainMethodResult result = invokeMain("-pretty", "DavesPretty");
-        System.out.println(result.getOut());
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result = invokeMain("-pretty", "DavesBill");
+        assertEquals(result.getOut().trim(),"Must supply valid phone bill for pretty print");
+
+        try{
+            String path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            File file = new File(path);
+            assertFalse(file.exists());
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
         System.out.println("Test Number 26");
     }
-*/
+
     @Test
     public void TestHourPrettyPrint(){
         MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "08:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
@@ -508,10 +644,7 @@ public class Project3Test extends InvokeMainTestCase {
             //System.out.println(allLines);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
-            /*assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
-                    "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");*/
+
             assertEquals(allLines.trim(),
                     "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
                             " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
@@ -542,6 +675,70 @@ public class Project3Test extends InvokeMainTestCase {
             }
         }
         System.out.println("Test Number 27");
+    }
+
+    @Test
+    public void TestPrettyPrintWithExistantTextFile(){
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
+        BufferedReader reader = null;
+        try{
+            String path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            File file = new File(path);
+            reader=new BufferedReader(new FileReader(file));
+            String line;
+            String allLines="";
+            while ((line = reader.readLine()) != null) {
+                allLines+=line +"\n";
+            }
+            if(allLines == "")
+                throw new IOException("Empty File");
+
+            //System.out.println(allLines);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+            assertEquals(allLines.trim(),
+                    "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
+                            " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
+                            " | |__) | |__   ___  _ __   ___  | |_) |_| | |   __) | | | | | | | | | |\n" +
+                            " |  ___/| '_ \\ / _ \\| '_ \\ / _ \\ |  _ <| | | |  |__ <| | | | | | | | | |\n" +
+                            " | |    | | | | (_) | | | |  __/ | |_) | | | |  ___) | |_| | |_| | |_| |\n" +
+                            " |_|    |_| |_|\\___/|_| |_|\\___| |____/|_|_|_| |____/ \\___/ \\___/ \\___/ \n" +
+                            "                                                                        \n" +
+                            "                                                                        \n" +
+                            "   ______           __                                \n" +
+                            "  / ____/_  _______/ /_____  ____ ___  ___  _____   _ \n" +
+                            " / /   / / / / ___/ __/ __ \\/ __ `__ \\/ _ \\/ ___/  (_)\n" +
+                            "/ /___/ /_/ (__  ) /_/ /_/ / / / / / /  __/ /     _   DAVID\n" +
+                            "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
+                            "                                                      \n" +
+                            "#     caller      callee           Start Time        End Time        Duration \n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                            "\n" +
+                            "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
+        }
+        catch(IOException ex){
+            System.out.println("Error Reading From File " + ex.getMessage());
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Test Number 28");
     }
 
 
