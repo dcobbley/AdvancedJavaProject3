@@ -118,4 +118,14 @@ public class phonecall extends AbstractPhoneCall {
         else
             return "";
     }
+
+    public String duration(){
+        long duration =startTime.getTime()-endTime.getTime();
+        long diffMinutes = duration / (60 * 1000) % 60;
+        long diffHours = duration / (60 * 60 * 1000);
+        if(diffHours ==0)
+            return -1*diffMinutes + " minutes";
+        else
+            return "  "+-1*diffHours+":"+ -1*diffMinutes +"min";
+    }
 }

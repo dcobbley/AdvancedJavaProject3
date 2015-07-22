@@ -271,6 +271,12 @@ public class Project3 {
 
                 }
             }
+            if(textFileFlag && pretty){
+                //check to make sure they don't have the same fileName
+                if(fileName.equals(prettyName)){
+                    throw new Exception("textFile name and pretty name cannot be the same");
+                }
+            }
             if(textFileFlag){
                 textFileFunction(fileName);
             }
@@ -305,11 +311,15 @@ public class Project3 {
     }
 
     private static void prettyPrintFunction(String path){
-        System.out.println("PRETTY PRINT CALLED");
         try{
             if(path == null)
                 throw new IllegalArgumentException("Path name missing");
 
+            PrettyPrinter pretty = new PrettyPrinter(path);
+            if(MyPhoneBill != null)
+                pretty.dump(MyPhoneBill);
+            else
+                throw new IllegalArgumentException("Must supply valid phone bill for pretty print");
 
 
 

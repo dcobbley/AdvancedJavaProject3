@@ -401,11 +401,149 @@ public class Project3Test extends InvokeMainTestCase {
     }
 
     @Test
-    public void TestBasicPrettyPrint(){
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-pretty", "DavesBill");
-        System.out.println(result.getOut());
+    public void TestMinutePrettyPrint(){
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
+
+        BufferedReader reader = null;
+        try{
+            String path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            File file = new File(path);
+            reader=new BufferedReader(new FileReader(file));
+            String line;
+            String allLines="";
+            while ((line = reader.readLine()) != null) {
+                allLines+=line +"\n";
+            }
+            if(allLines == "")
+                throw new IOException("Empty File");
+
+            //System.out.println(allLines);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            /*assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
+                    "Customer: david\n" +
+                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40\n" +
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");*/
+            assertEquals(allLines.trim(),
+                    "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
+                    " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
+                    " | |__) | |__   ___  _ __   ___  | |_) |_| | |   __) | | | | | | | | | |\n" +
+                    " |  ___/| '_ \\ / _ \\| '_ \\ / _ \\ |  _ <| | | |  |__ <| | | | | | | | | |\n" +
+                    " | |    | | | | (_) | | | |  __/ | |_) | | | |  ___) | |_| | |_| | |_| |\n" +
+                    " |_|    |_| |_|\\___/|_| |_|\\___| |____/|_|_|_| |____/ \\___/ \\___/ \\___/ \n" +
+                    "                                                                        \n" +
+                    "                                                                        \n" +
+                    "   ______           __                                \n" +
+                    "  / ____/_  _______/ /_____  ____ ___  ___  _____   _ \n" +
+                    " / /   / / / / ___/ __/ __ \\/ __ `__ \\/ _ \\/ ___/  (_)\n" +
+                    "/ /___/ /_/ (__  ) /_/ /_/ / / / / / /  __/ /     _   DAVID\n" +
+                    "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
+                    "                                                      \n" +
+                    "#     caller      callee           Start Time        End Time        Duration \n" +
+                    "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                    "\n" +
+                    "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
+        }
+        catch(IOException ex){
+            System.out.println("Error Reading From File " + ex.getMessage());
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
         System.out.println("Test Number 22");
     }
+
+
+    @Test
+    public void TestNullPrettyPrint(){
+        MainMethodResult result = invokeMain("-pretty", "DavesPretty");
+        System.out.println(result.getOut());
+        System.out.println("Test Number 23");
+    }
+/*
+    @Test
+    public void TestPrettyPrintWithTextFile(){
+        MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
+        System.out.println(result.getOut());
+        System.out.println("Test Number 24");
+    }
+
+    @Test
+    public void TestAllArguments(){
+        MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty", "-print", "-README");
+        System.out.println(result.getOut());
+        System.out.println("Test Number 25");
+
+    @Test
+    public void TestTextFileReadingPrettyPrint(){
+    //add a text file that contains a standard phone bill, then have pretty read from it
+        MainMethodResult result = invokeMain("-pretty", "DavesPretty");
+        System.out.println(result.getOut());
+        System.out.println("Test Number 26");
+    }
+*/
+    @Test
+    public void TestHourPrettyPrint(){
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "08:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
+        BufferedReader reader = null;
+        try{
+            String path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            File file = new File(path);
+            reader=new BufferedReader(new FileReader(file));
+            String line;
+            String allLines="";
+            while ((line = reader.readLine()) != null) {
+                allLines+=line +"\n";
+            }
+            if(allLines == "")
+                throw new IOException("Empty File");
+
+            //System.out.println(allLines);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            /*assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
+                    "Customer: david\n" +
+                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40\n" +
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");*/
+            assertEquals(allLines.trim(),
+                    "_____  _                        ____  _ _ _   ____   ___   ___   ___  \n" +
+                            " |  __ \\| |                      |  _ \\(_) | | |___ \\ / _ \\ / _ \\ / _ \\ \n" +
+                            " | |__) | |__   ___  _ __   ___  | |_) |_| | |   __) | | | | | | | | | |\n" +
+                            " |  ___/| '_ \\ / _ \\| '_ \\ / _ \\ |  _ <| | | |  |__ <| | | | | | | | | |\n" +
+                            " | |    | | | | (_) | | | |  __/ | |_) | | | |  ___) | |_| | |_| | |_| |\n" +
+                            " |_|    |_| |_|\\___/|_| |_|\\___| |____/|_|_|_| |____/ \\___/ \\___/ \\___/ \n" +
+                            "                                                                        \n" +
+                            "                                                                        \n" +
+                            "   ______           __                                \n" +
+                            "  / ____/_  _______/ /_____  ____ ___  ___  _____   _ \n" +
+                            " / /   / / / / ___/ __/ __ \\/ __ `__ \\/ _ \\/ ___/  (_)\n" +
+                            "/ /___/ /_/ (__  ) /_/ /_/ / / / / / /  __/ /     _   DAVID\n" +
+                            "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
+                            "                                                      \n" +
+                            "#     caller      callee           Start Time        End Time        Duration \n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 08:38  10/15/2015 09:42     1:4min\n" +
+                            "\n" +
+                            "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
+        }
+        catch(IOException ex){
+            System.out.println("Error Reading From File " + ex.getMessage());
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Test Number 27");
+    }
+
 
 
 
