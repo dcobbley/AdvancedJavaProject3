@@ -4,8 +4,10 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -18,6 +20,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
     Date startTime;
     Date endTime;
     DateFormat dateFormat;
+    DateFormat ShortDateFormat;
 
     /**
      * Constructor for the phonecall class. Holds all relavent data for a particular phonecall
@@ -28,6 +31,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
      */
     phonecall(String callerNumber, String calleeNumber, String startTime, String endTime){
         dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        ShortDateFormat = new SimpleDateFormat("MM/dd/yyy HH:mm", Locale.ENGLISH);
         //Check for bad data
         try{
             if(startTime.contains("\"")||endTime.contains("\""))
@@ -57,6 +61,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
     }
     phonecall(){
         dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        ShortDateFormat = new SimpleDateFormat("MM/dd/yyy HH:mm", Locale.ENGLISH);
         try {
             calleeNumber = "";
             callerNumber = "";
@@ -70,11 +75,23 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
     }
 
     public void setDate(String start, String end){
-        String[] startArray= start.split("[ /:]");
-        String[] endArray=end.split("[ /:]");
+        //String[] startArray= start.split("[ /:]");
+        //String[] endArray=end.split("[ /:]");
 
-        this.startTime = new Date(Integer.parseInt(startArray[2])-1900, (Integer.parseInt(startArray[0]))-1, Integer.parseInt(startArray[1]),Integer.parseInt(startArray[3]),Integer.parseInt(startArray[4]),0);
-        this.endTime = new Date(Integer.parseInt(endArray[2])-1900, (Integer.parseInt(endArray[0]))-1, Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
+        //this.startTime = new Date(Integer.parseInt(startArray[2])-1900, (Integer.parseInt(startArray[0]))-1, Integer.parseInt(startArray[1]),Integer.parseInt(startArray[3]),Integer.parseInt(startArray[4]),0);
+        //this.endTime = new Date(Integer.parseInt(endArray[2])-1900, (Integer.parseInt(endArray[0]))-1, Integer.parseInt(endArray[1]),Integer.parseInt(endArray[3]),Integer.parseInt(endArray[4]),0);
+        try {
+
+            /*System.out.println("Date formatting stuff");
+            System.out.println("old "+ this.startTime.getTime());
+            System.out.println(ShortDateFormat.parse(start));*/
+            this.startTime=ShortDateFormat.parse(start);
+            this.endTime = ShortDateFormat.parse(end);
+        }
+        catch(ParseException ex){
+            System.out.println("Error Parsing the time, please enter valid time " +ex.getMessage());
+            System.exit(1);
+        }
     }
     /**
      *
@@ -112,6 +129,8 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
      */
     @Override
     public String getEndTimeString() {
+
+        //System.out.println("String Date Formatting "+endTime.getTim )
         if(endTime != null)
             return (dateFormat.format(endTime));
         else
