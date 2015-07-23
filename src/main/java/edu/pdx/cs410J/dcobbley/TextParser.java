@@ -78,7 +78,7 @@ public class TextParser implements PhoneBillParser {
             if(tokens[counter] != null){
                 String[] temp = tokens[counter].split("\\s+|,\\s*|\\.\\s*");
                 if(temp.length>10) {
-                    myPhoneBill.addPhoneCall(new phonecall(temp[3],temp[5],temp[7]+" " +temp[8], temp[10]+" " +temp[11]));
+                    myPhoneBill.addPhoneCall(new phonecall(temp[3],temp[5],temp[7]+" " +temp[8]+" " +temp[9], temp[11]+" " +temp[12]+" " +temp[13]));
                 }
             }
         }

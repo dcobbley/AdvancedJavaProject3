@@ -22,23 +22,46 @@ public class Project3Test extends InvokeMainTestCase {
     /**
      * Invokes the main method of {@link Project3} with the given arguments.
      */
+    String ReadmeString;
     private MainMethodResult invokeMain(String... args) {
+        setReadmeString();
         return invokeMain( Project3.class, args );
+
+    }
+    private void setReadmeString(){
+        ReadmeString="README has been called\n" +
+                "This program is a phonebill application which takes a very specific amount of arguments\n" +
+                "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
+                "\n" +
+                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
+                "args are (in this order):\n" +
+                "customer               Person whose phone bill we’re modeling\n" +
+                "callerNumber           Phone number of caller\n" +
+                "calleeNumber           Phone number of person who was called\n" +
+                "startTime              Date and time call began\n" +
+                "endTime                Date and time call ended\n" +
+                "options are (options may appear in any order):\n" +
+                "-pretty file           Pretty print the phone bill to a text file\n" +
+                "or standard out (file -).\n" +
+                "-textFile file         Where to read/write the phone bill\n" +
+                "-print                 Prints a description of the new phone call\n" +
+                "-README                Prints a README for this project and exits\n" +
+                "Dates and times should be in the format: mm/dd/yyyy hh:mm am";
     }
 
   @Test
     public void TestPrintingOutAPhoneCall(){
-        MainMethodResult result = invokeMain("-print","Test8","123-456-7890","234-567-8901","03/03/2015","12:00","05/04/2015","16:00");
-      System.out.println(result.getOut());
-        assertEquals(result.getOut().trim(),"Customer: Test8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 12:00 to 05/04/2015 16:00]");
+        MainMethodResult result = invokeMain("-print","Test8","123-456-7890","234-567-8901","03/03/2015","11:00","am","05/04/2015","12:05", "pm" );
+      //System.out.println(result.getOut());
+        assertEquals(result.getOut().trim(),"Customer: Test8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 11:00 AM to 05/04/2015 12:05 PM]");
         assertEquals(new Integer(0), result.getExitCode());
         //System.out.println(result.getOut());
           }
 
     @Test
     public void TestMultiWordUserName(){
-        MainMethodResult result = invokeMain("-print","Test 8","123-456-7890","234-567-8901","03/03/2015","12:00","09/04/2015","16:00");
-        assertEquals(result.getOut().trim(),"Customer: Test 8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 12:00 to 09/04/2015 16:00]");
+        MainMethodResult result = invokeMain("-print","Test 8","123-456-7890","234-567-8901","03/03/2015","12:00","am","09/04/2015","16:00","am");
+        assertEquals(result.getOut().trim(),"Customer: Test 8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 12:00 AM to 09/04/2015 04:00 PM]");
         assertEquals(new Integer(0), result.getExitCode());
         //System.out.println(result.getOut());
             }
@@ -53,56 +76,42 @@ public class Project3Test extends InvokeMainTestCase {
 
   @Test
   public void TestUnknownCommandArgument(){
-      MainMethodResult result = invokeMain("-fred", "Test6", "123-456-7890", "234-567-8901", "03/03/2015", "12:00", "04/04/2015", "16:00");
+      MainMethodResult result = invokeMain("-fred", "Test6", "123-456-7890", "234-567-8901", "03/03/2015", "12:00","am", "04/04/2015", "16:00","am");
       assertEquals(result.getOut().trim(), "Non-Valid Argument\n" +
-              "README has been called\n" +
-              "This program is a phonebill application which takes a very specific amount of arguments\n" +
-              "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-              "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-              "args are (in this order):\n" +
-              "customer               Person whose phone bill we’re modeling\n" +
-              "callerNumber           Phone number of caller\n" +
-              "calleeNumber           Phone number of person who was called\n" +
-              "startTime              Date and time call began (24-hour time)\n" +
-              "endTime                Date and time call ended (24-hour time)\n" +
-              "options are (options may appear in any order):\n" +
-              "-textFile file         Where to read/write the phone bill\n" +
-              "-print                 Prints a description of the new phone call\n" +
-              "-README                Prints a README for this project and exits\n" +
-              "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+              ReadmeString);
 
   }
     @Test
     public void TestUnknownArgumetn(){
-        MainMethodResult result = invokeMain("Test7", "123-456-7890", "234-567-8901", "03/03/2015", "12:00", "04/04/2015", "16:00", "fred");
+        MainMethodResult result = invokeMain("Test7", "123-456-7890", "234-567-8901", "03/03/2015", "12:00","am", "04/04/2015", "16:00","am", "fred");
         assertEquals(result.getOut().trim(),"Not a valid command");
             }
 
     @Test
   public void TestMalformedEndTime(){
-      MainMethodResult result = invokeMain("Test5", "123-456-7890", "234-567-8901", "03/03/2015", "12:00", "01/04/20/1", "16:00");
+      MainMethodResult result = invokeMain("Test5", "123-456-7890", "234-567-8901", "03/03/2015", "12:00","am", "01/04/20/1", "16:00","am");
       assertEquals(result.getOut().trim(),"Date format must follow mm/dd/yyyy");
           }
 
   @Test
   public void TestMalformedStartTime(){
-      MainMethodResult result =invokeMain("Test4", "123-456-7890", "234-567-8901", "03/03/2015", "12:XX", "03/03/2015", "16:00");
-      assertEquals(result.getOut().trim(), "Time format must follow mm:hh (24 hour time)");
+      MainMethodResult result =invokeMain("Test4", "123-456-7890", "234-567-8901", "03/03/2015", "12:XX","am", "03/03/2015", "12:00","pm");
+      assertEquals(result.getOut().trim(), "Time format must follow mm:hh (12 hour time)");
         }
 
   @Test
   public void TestNonIntegerPhoneNumber(){
-      MainMethodResult result = invokeMain("Test3", "ABC-123-4567", "123-456-7890", "03/03/2015", "12:00", "03/03/2015", "16:00");
+      MainMethodResult result = invokeMain("Test3", "ABC-123-4567", "123-456-7890", "03/03/2015", "12:00","am", "03/03/2015", "16:00","am");
       assertEquals(new Integer(1), result.getExitCode());
       assertTrue(result.getOut().trim().equals("Valid phone numbers must contain exactly 10 numbers plus two dashes"));
         }
 
     @Test
     public void TestFromGrader(){
-        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2015", "12:00", "05/04/2015", "16:00");
+        MainMethodResult result = invokeMain("-print", "Test8", "123-456-7890", "234-567-8901", "03/03/2015", "12:00","pm", "05/04/2015", "12:00","am");
+        //System.out.println(result.getOut());
         assertEquals(new Integer(0), result.getExitCode());
-        assertTrue(result.getOut().trim().equals("Customer: Test8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 12:00 to 05/04/2015 16:00]"));
+        assertTrue(result.getOut().trim().equals("Customer: Test8 [Phone call from 123-456-7890 to 234-567-8901 from 03/03/2015 12:00 PM to 05/04/2015 12:00 AM]"));
 
     }
 
@@ -143,7 +152,7 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-      MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+      MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38" ,"am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         //System.out.println(result.getOut());
       assertEquals(new Integer(0), result.getExitCode());
 
@@ -154,23 +163,7 @@ public class Project3Test extends InvokeMainTestCase {
   public void TestTextFileNodataNoArgsNofile(){
       MainMethodResult result = invokeMain("-textFile");
       assertEquals(new Integer(1), result.getExitCode());
-      assertTrue(result.getOut().trim().equals("-textFile argument must be followed by <filename>\n" +
-              "README has been called\n" +
-              "This program is a phonebill application which takes a very specific amount of arguments\n" +
-              "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-              "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-              "args are (in this order):\n" +
-              "customer               Person whose phone bill we’re modeling\n" +
-              "callerNumber           Phone number of caller\n" +
-              "calleeNumber           Phone number of person who was called\n" +
-              "startTime              Date and time call began (24-hour time)\n" +
-              "endTime                Date and time call ended (24-hour time)\n" +
-              "options are (options may appear in any order):\n" +
-              "-textFile file         Where to read/write the phone bill\n" +
-              "-print                 Prints a description of the new phone call\n" +
-              "-README                Prints a README for this project and exits\n" +
-              "Dates and times should be in the format: mm/dd/yyyy hh:mm"));
+      assertTrue(result.getOut().trim().equals("-textFile argument must be followed by <filename>\n" +ReadmeString));
       //System.out.println(result.getOut());
 
   }
@@ -179,23 +172,7 @@ public class Project3Test extends InvokeMainTestCase {
   public void TestPrintNoDataNoOtherArgs(){
       MainMethodResult result = invokeMain("-print");
       assertEquals(new Integer(1), result.getExitCode());
-      assertEquals(result.getOut().trim(), "Must provide a phone bill\n" +
-              "README has been called\n" +
-              "This program is a phonebill application which takes a very specific amount of arguments\n" +
-              "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-              "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-              "args are (in this order):\n" +
-              "customer               Person whose phone bill we’re modeling\n" +
-              "callerNumber           Phone number of caller\n" +
-              "calleeNumber           Phone number of person who was called\n" +
-              "startTime              Date and time call began (24-hour time)\n" +
-              "endTime                Date and time call ended (24-hour time)\n" +
-              "options are (options may appear in any order):\n" +
-              "-textFile file         Where to read/write the phone bill\n" +
-              "-print                 Prints a description of the new phone call\n" +
-              "-README                Prints a README for this project and exits\n" +
-              "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+      assertEquals(result.getOut().trim(), "Must provide a phone bill\n" +ReadmeString);
 
 
   }
@@ -204,55 +181,24 @@ public class Project3Test extends InvokeMainTestCase {
   public void TestReadmeNoDataNoArgs(){
       MainMethodResult result = invokeMain("-README");
       assertEquals(new Integer(0), result.getExitCode());
-      assertTrue(result.getOut().trim().equals("README has been called\n" +
-              "This program is a phonebill application which takes a very specific amount of arguments\n" +
-              "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-              "\n" +
-              "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-              "args are (in this order):\n" +
-              "customer               Person whose phone bill we’re modeling\n" +
-              "callerNumber           Phone number of caller\n" +
-              "calleeNumber           Phone number of person who was called\n" +
-              "startTime              Date and time call began (24-hour time)\n" +
-              "endTime                Date and time call ended (24-hour time)\n" +
-              "options are (options may appear in any order):\n" +
-              "-textFile file         Where to read/write the phone bill\n" +
-              "-print                 Prints a description of the new phone call\n" +
-              "-README                Prints a README for this project and exits\n" +
-              "Dates and times should be in the format: mm/dd/yyyy hh:mm"));
+      assertEquals(result.getOut().trim(),ReadmeString);
 
   }
 
     @Test
     public void testRegularCommandLineArguments(){
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-print");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-print");
         assertEquals(new Integer(0), result.getExitCode());
-        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42]");
+        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM]");
 
     }
 
 
     @Test
     public void testAllCommandLineArguments(){
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-print", "-README");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-print", "-README");
         assertEquals(new Integer(0), result.getExitCode());
-        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42]\n" +
-                "README has been called\n" +
-                "This program is a phonebill application which takes a very specific amount of arguments\n" +
-                "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-                "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-                "args are (in this order):\n" +
-                "customer               Person whose phone bill we’re modeling\n" +
-                "callerNumber           Phone number of caller\n" +
-                "calleeNumber           Phone number of person who was called\n" +
-                "startTime              Date and time call began (24-hour time)\n" +
-                "endTime                Date and time call ended (24-hour time)\n" +
-                "options are (options may appear in any order):\n" +
-                "-textFile file         Where to read/write the phone bill\n" +
-                "-print                 Prints a description of the new phone call\n" +
-                "-README                Prints a README for this project and exits\n" +
-                "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM]\n" +ReadmeString);
 
     }
 
@@ -260,23 +206,7 @@ public class Project3Test extends InvokeMainTestCase {
     public void NoCommandLineArgs(){
         MainMethodResult result = invokeMain();
         assertEquals(new Integer(1), result.getExitCode());
-        assertTrue(result.getOut().trim().equals("Cannot have zero arguments\n" +
-                "README has been called\n" +
-                "This program is a phonebill application which takes a very specific amount of arguments\n" +
-                "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-                "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-                "args are (in this order):\n" +
-                "customer               Person whose phone bill we’re modeling\n" +
-                "callerNumber           Phone number of caller\n" +
-                "calleeNumber           Phone number of person who was called\n" +
-                "startTime              Date and time call began (24-hour time)\n" +
-                "endTime                Date and time call ended (24-hour time)\n" +
-                "options are (options may appear in any order):\n" +
-                "-textFile file         Where to read/write the phone bill\n" +
-                "-print                 Prints a description of the new phone call\n" +
-                "-README                Prints a README for this project and exits\n" +
-                "Dates and times should be in the format: mm/dd/yyyy hh:mm"));
+        assertTrue(result.getOut().trim().equals("Cannot have zero arguments\n" +ReadmeString));
         //System.out.println(result.getOut());
 
     }
@@ -306,11 +236,10 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         assertEquals(new Integer(0), result.getExitCode());
-        MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38" ,"am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         assertEquals(new Integer(0), anotherResult.getExitCode());
-
 
         BufferedReader reader = null;
         try{
@@ -330,7 +259,7 @@ public class Project3Test extends InvokeMainTestCase {
             Date date = new Date();
             assertEquals(allLines.trim(),"Created on: "+dateFormat.format(date)+"\n" +
                     "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM");
         }
         catch(IOException ex){
             System.out.println("Error Reading From File " + ex.getMessage());
@@ -354,11 +283,11 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         assertEquals(new Integer(0), result.getExitCode());
-        MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-555-7777", "10/17/2015", "10:18", "10/17/2015", "10:40", "-textFile", "DavesBill", "-print");
+        MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-555-7777", "10/17/2015", "10:18","am", "10/17/2015", "10:40","am", "-textFile", "DavesBill", "-print");
         assertEquals(new Integer(0), anotherResult.getExitCode());
-        assertEquals(anotherResult.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40]");
+        assertEquals(anotherResult.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM, Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 AM to 10/17/2015 10:40 AM]");
 
         BufferedReader reader = null;
         try{
@@ -378,8 +307,8 @@ public class Project3Test extends InvokeMainTestCase {
             Date date = new Date();
             assertEquals(allLines.trim(),"Created on: "+ dateFormat.format(date)+"\n" +
                     "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42\n" +
-                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 to 10/17/2015 10:40");
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM\n" +
+                    "Phone call from 503-709-4866 to 503-555-7777 from 10/17/2015 10:18 AM to 10/17/2015 10:40 AM");
         }
 
         catch(IOException ex){
@@ -396,7 +325,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestMinutePrettyPrint(){
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-pretty", "DavesPretty");
         assertEquals(new Integer(0), result.getExitCode());
 
         BufferedReader reader = null;
@@ -432,7 +361,7 @@ public class Project3Test extends InvokeMainTestCase {
                     "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
                     "                                                      \n" +
                     "#     caller      callee           Start Time        End Time        Duration \n" +
-                    "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                    "1 503-709-4866  503-880-6960   10/15/2015 09:38 AM  10/15/2015 09:42 AM   4 minutes\n" +
                     "\n" +
                     "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
         }
@@ -486,26 +415,10 @@ public class Project3Test extends InvokeMainTestCase {
             System.out.println("Sad Day");
         }
         //Delete both davesBill and davesPretty
-        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty", "-print", "-README");
 
-        assertEquals(result.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42]\n" +
-                "README has been called\n" +
-                "This program is a phonebill application which takes a very specific amount of arguments\n" +
-                "You must provide a customer name, caller number, callee number, start time, and end time (mm/dd/yyyy mm:hh)\n" +
-                "\n" +
-                "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
-                "args are (in this order):\n" +
-                "customer               Person whose phone bill we’re modeling\n" +
-                "callerNumber           Phone number of caller\n" +
-                "calleeNumber           Phone number of person who was called\n" +
-                "startTime              Date and time call began (24-hour time)\n" +
-                "endTime                Date and time call ended (24-hour time)\n" +
-                "options are (options may appear in any order):\n" +
-                "-textFile file         Where to read/write the phone bill\n" +
-                "-print                 Prints a description of the new phone call\n" +
-                "-README                Prints a README for this project and exits\n" +
-                "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+        assertEquals(result.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM]\n" + ReadmeString);
 
 
         //Now look at external files
@@ -542,7 +455,7 @@ public class Project3Test extends InvokeMainTestCase {
                             "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
                             "                                                      \n" +
                             "#     caller      callee           Start Time        End Time        Duration \n" +
-                            "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 09:38 AM  10/15/2015 09:42 AM   4 minutes\n" +
                             "\n" +
                             "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
         }
@@ -574,7 +487,7 @@ public class Project3Test extends InvokeMainTestCase {
 
             assertEquals(allLines.trim(),"Created on: "+dateFormat.format(date) +"\n" +
                     "Customer: david\n" +
-                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42");
+                    "Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM");
         }
         catch(IOException ex){
             System.out.println("Error Reading From File " + ex.getMessage());
@@ -603,7 +516,7 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-pretty", "DavesBill");
         assertEquals(result.getOut().trim(),"Must supply valid phone bill for pretty print");
 
@@ -620,7 +533,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestHourPrettyPrint(){
-        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "08:38", "10/15/2015", "09:42", "-pretty", "DavesPretty");
+        MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "08:38","am", "10/15/2015", "09:42","am", "-pretty", "DavesPretty");
         BufferedReader reader = null;
         try{
             String path = System.getProperty("user.dir") + "/DavesPretty.txt";
@@ -654,7 +567,7 @@ public class Project3Test extends InvokeMainTestCase {
                             "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
                             "                                                      \n" +
                             "#     caller      callee           Start Time        End Time        Duration \n" +
-                            "1 503-709-4866  503-880-6960   10/15/2015 08:38  10/15/2015 09:42     1:4min\n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 08:38 AM  10/15/2015 09:42 AM     1:4min\n" +
                             "\n" +
                             "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
         }
@@ -683,7 +596,7 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
         BufferedReader reader = null;
         try{
@@ -718,7 +631,7 @@ public class Project3Test extends InvokeMainTestCase {
                             "\\____/\\__,_/____/\\__/\\____/_/ /_/ /_/\\___/_/     (_)  \n" +
                             "                                                      \n" +
                             "#     caller      callee           Start Time        End Time        Duration \n" +
-                            "1 503-709-4866  503-880-6960   10/15/2015 09:38  10/15/2015 09:42   4 minutes\n" +
+                            "1 503-709-4866  503-880-6960   10/15/2015 09:38 AM  10/15/2015 09:42 AM   4 minutes\n" +
                             "\n" +
                             "Phone Bill 3000 Pretty Print Bill Created on: "+ dateFormat.format(date));
         }
@@ -747,13 +660,13 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult result4 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "12:38", "10/15/2015", "13:42", "-textFile", "DavesBill");
-        MainMethodResult result3 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
-        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/17/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
-        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
+        MainMethodResult result4 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "12:38","am", "10/15/2015", "13:42","am", "-textFile", "DavesBill");
+        MainMethodResult result3 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
+        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/17/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
+        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
 
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-print");
-        assertEquals(result.getOut().trim(),"Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/17/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 12:38 to 10/15/2015 13:42]");
+        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM, Phone call from 503-709-4866 to 503-880-6960 from 10/17/2015 09:38 AM to 10/15/2015 09:42 AM, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 12:38 AM to 10/15/2015 01:42 PM, Phone call from 503-709-4866 to 503-880-6960 from 10/18/2015 09:38 AM to 10/15/2015 09:42 AM]");
 
         //System.out.println(result.getOut());
         assertEquals(new Integer(0), result.getExitCode());
@@ -772,16 +685,16 @@ public class Project3Test extends InvokeMainTestCase {
         catch(Exception ex){
             System.out.println("Sad Day");
         }
-        MainMethodResult result33 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:52", "-textFile", "DavesBill");
+        MainMethodResult result33 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:52","am", "-textFile", "DavesBill");
 
-        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:32", "-textFile", "DavesBill");
-        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:42", "-textFile", "DavesBill");
-        MainMethodResult result3 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "09:22", "-textFile", "DavesBill");
-        MainMethodResult result4 = invokeMain("david", "503-555-4866", "503-880-6960", "10/15/2015", "09:38", "10/15/2015", "13:42", "-textFile", "DavesBill");
+        MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:32","am", "-textFile", "DavesBill");
+        MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
+        MainMethodResult result3 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:22","am", "-textFile", "DavesBill");
+        MainMethodResult result4 = invokeMain("david", "503-555-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "13:42","am", "-textFile", "DavesBill");
 
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-print");
         assertEquals(new Integer(0), result.getExitCode());
-        assertEquals(result.getOut(), "Customer: david [Phone call from 503-555-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 13:42, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:42, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:32, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:22, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 to 10/15/2015 09:52]\n");
+        assertEquals(result.getOut(), "Customer: david [Phone call from 503-555-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 01:42 PM, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM, Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:32 AM, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:22 AM, Phone call from 503-888-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:52 AM]\n");
         //System.out.println(result.getOut());
     }
 

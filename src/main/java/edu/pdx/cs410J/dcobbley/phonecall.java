@@ -19,7 +19,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
     String calleeNumber;
     Date startTime;
     Date endTime;
-    DateFormat dateFormat;
+    //DateFormat dateFormat;
     DateFormat ShortDateFormat;
 
     /**
@@ -30,8 +30,10 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
      * @param endTime The time at which the phonecall ended
      */
     phonecall(String callerNumber, String calleeNumber, String startTime, String endTime){
-        dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        ShortDateFormat = new SimpleDateFormat("MM/dd/yyy HH:mm", Locale.ENGLISH);
+        /*startTime=null;
+        endTime=null;*/
+        //dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        ShortDateFormat = new SimpleDateFormat("MM/dd/yyy hh:mm a", Locale.ENGLISH);
         //Check for bad data
         try{
             if(startTime.contains("\"")||endTime.contains("\""))
@@ -48,7 +50,9 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
             }
 
             if(!tempStart[1].matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")||!tempEnd[1].matches("([01]?[0-9]|2[0-3]):[0-5][0-9]"))
-                throw new IllegalArgumentException("Time format must follow mm:hh (24 hour time)");
+                throw new IllegalArgumentException("Time format must follow mm:hh (12 hour time)");
+            if(!tempStart[2].matches("(am|pm|AM|PM)")&&!tempEnd[2].matches("(am|pm|AM|PM)"))
+                throw new IllegalArgumentException("Time must include am/pm");
         }
         catch(IllegalArgumentException ex){
             System.out.println(ex.getMessage());
@@ -60,8 +64,8 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
         setDate(startTime,endTime);
     }
     phonecall(){
-        dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-        ShortDateFormat = new SimpleDateFormat("MM/dd/yyy HH:mm", Locale.ENGLISH);
+        //dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        ShortDateFormat = new SimpleDateFormat("hh/dd/yyy HH:mm a", Locale.ENGLISH);
         try {
             calleeNumber = "";
             callerNumber = "";
@@ -89,7 +93,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
             this.endTime = ShortDateFormat.parse(end);
         }
         catch(ParseException ex){
-            System.out.println("Error Parsing the time, please enter valid time " +ex.getMessage());
+            System.out.println("Error Parsing the time, please enter valid time, dont forget to include am/pm " +ex.getMessage());
             System.exit(1);
         }
     }
@@ -118,7 +122,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
     @Override
     public String getStartTimeString() {
         if(startTime != null)
-            return (dateFormat.format(startTime));
+            return (ShortDateFormat.format(startTime));
         else
             return "";
     }
@@ -132,7 +136,7 @@ public class phonecall extends AbstractPhoneCall implements Comparable<phonecall
 
         //System.out.println("String Date Formatting "+endTime.getTim )
         if(endTime != null)
-            return (dateFormat.format(endTime));
+            return (ShortDateFormat.format(endTime));
         else
             return "";
     }

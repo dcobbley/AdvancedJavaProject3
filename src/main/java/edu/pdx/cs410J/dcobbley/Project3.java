@@ -124,10 +124,10 @@ public class Project3 {
 
         try {
             //check that element to element+6 exists
-            if (args.length > element + 6) {
+            if (args.length > element + 8) {
                 //parse out customer information
-                MyPhoneBill = new phonebill(args[element++], new phonecall(args[element++], args[element++], args[element++] + " " + args[element++], args[element++] + " " + args[element++]));
-                //customer                       caller            callee        starttime         +         data          endtime           +         data
+                MyPhoneBill = new phonebill(args[element++], new phonecall(args[element++], args[element++], args[element++] + " " + args[element++]+ " "+ args[element++], args[element++] + " " + args[element++]+ " " + args[element++]));
+                //                              customer                       caller            callee        starttime         +         date         +       am/pm         endtime           +         date        +         am:pm
                 //Parse commands at the end of the arg
                 parseCommandsAtEnd(args, element);
             } else {
@@ -399,13 +399,15 @@ public class Project3 {
                 "customer               Person whose phone bill we’re modeling\n" +
                 "callerNumber           Phone number of caller\n" +
                 "calleeNumber           Phone number of person who was called\n" +
-                "startTime              Date and time call began (24-hour time)\n" +
-                "endTime                Date and time call ended (24-hour time)\n" +
+                "startTime              Date and time call began\n" +
+                "endTime                Date and time call ended\n" +
                 "options are (options may appear in any order):\n" +
+                "-pretty file           Pretty print the phone bill to a text file\n" +
+                "or standard out (file -).\n" +
                 "-textFile file         Where to read/write the phone bill\n" +
                 "-print                 Prints a description of the new phone call\n" +
                 "-README                Prints a README for this project and exits\n" +
-                "Dates and times should be in the format: mm/dd/yyyy hh:mm");
+                "Dates and times should be in the format: mm/dd/yyyy hh:mm am");
     }
 
 }
