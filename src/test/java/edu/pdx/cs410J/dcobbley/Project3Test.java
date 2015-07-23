@@ -49,6 +49,20 @@ public class Project3Test extends InvokeMainTestCase {
                 "Dates and times should be in the format: mm/dd/yyyy hh:mm am";
     }
 
+    private void deleteFiles() {
+        try{
+            String path = System.getProperty("user.dir") + "/DavesBill.txt";
+            File file = new File(path);
+            file.delete();
+            path = System.getProperty("user.dir") + "/DavesPretty.txt";
+            file = new File(path);
+            file.delete();
+        }
+        catch(Exception ex){
+            System.out.println("Sad Day");
+        }
+    }
+
   @Test
     public void TestPrintingOutAPhoneCall(){
         MainMethodResult result = invokeMain("-print","Test8","123-456-7890","234-567-8901","03/03/2015","11:00","am","05/04/2015","12:05", "pm" );
@@ -144,14 +158,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
   public void TestTextDumper(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+      deleteFiles();
       MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38" ,"am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         //System.out.println(result.getOut());
       assertEquals(new Integer(0), result.getExitCode());
@@ -163,7 +170,7 @@ public class Project3Test extends InvokeMainTestCase {
   public void TestTextFileNodataNoArgsNofile(){
       MainMethodResult result = invokeMain("-textFile");
       assertEquals(new Integer(1), result.getExitCode());
-      assertTrue(result.getOut().trim().equals("-textFile argument must be followed by <filename>\n" +ReadmeString));
+      assertTrue(result.getOut().trim().equals("-textFile argument must be followed by <filename>\n" + ReadmeString));
       //System.out.println(result.getOut());
 
   }
@@ -198,7 +205,7 @@ public class Project3Test extends InvokeMainTestCase {
     public void testAllCommandLineArguments(){
         MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-print", "-README");
         assertEquals(new Integer(0), result.getExitCode());
-        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM]\n" +ReadmeString);
+        assertEquals(result.getOut().trim(), "Customer: david [Phone call from 503-709-4866 to 503-880-6960 from 10/15/2015 09:38 AM to 10/15/2015 09:42 AM]\n" + ReadmeString);
 
     }
 
@@ -206,21 +213,14 @@ public class Project3Test extends InvokeMainTestCase {
     public void NoCommandLineArgs(){
         MainMethodResult result = invokeMain();
         assertEquals(new Integer(1), result.getExitCode());
-        assertTrue(result.getOut().trim().equals("Cannot have zero arguments\n" +ReadmeString));
+        assertTrue(result.getOut().trim().equals("Cannot have zero arguments\n" + ReadmeString));
         //System.out.println(result.getOut());
 
     }
 
     @Test
     public void TestNonExistantFile(){//PRODUCES EMPTY FILES??
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result = invokeMain("-textFile", "DavesBill");
         assertEquals(new Integer(0), result.getExitCode());
 
@@ -228,14 +228,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestDuplicates(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         assertEquals(new Integer(0), result.getExitCode());
         MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38" ,"am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
@@ -275,14 +268,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestMultiplePhonecalls(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         assertEquals(new Integer(0), result.getExitCode());
         MainMethodResult anotherResult = invokeMain("david", "503-709-4866", "503-555-7777", "10/17/2015", "10:18","am", "10/17/2015", "10:40","am", "-textFile", "DavesBill", "-print");
@@ -387,14 +373,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestPrettyPrintWithNonExistantTextFile(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
         assertEquals(new Integer(1), result.getExitCode());
         assertEquals(result.getOut().trim(), "Must supply valid phone bill for pretty print");
@@ -403,17 +382,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestAllArguments() {
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-            path = System.getProperty("user.dir") + "/DavesPretty.txt";
-            file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         //Delete both davesBill and davesPretty
         MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty", "-print", "-README");
@@ -502,20 +471,12 @@ public class Project3Test extends InvokeMainTestCase {
 
     }
 
+
+
     @Test
     public void TestTextFileReadingPrettyPrint(){
     //add a text file that contains a standard phone bill, then have pretty read from it
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-            path = System.getProperty("user.dir") + "/DavesPretty.txt";
-            file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-pretty", "DavesBill");
         assertEquals(result.getOut().trim(),"Must supply valid phone bill for pretty print");
@@ -585,17 +546,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestPrettyPrintWithExistantTextFile(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-            path = System.getProperty("user.dir") + "/DavesPretty.txt";
-            file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult otherResult = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result = invokeMain("-textFile", "DavesBill", "-pretty", "DavesPretty");
         BufferedReader reader = null;
@@ -649,17 +600,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestSortingPhoneCallsByDate(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-            path = System.getProperty("user.dir") + "/DavesPretty.txt";
-            file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result4 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "12:38","am", "10/15/2015", "13:42","am", "-textFile", "DavesBill");
         MainMethodResult result3 = invokeMain("david", "503-709-4866", "503-880-6960", "10/18/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
         MainMethodResult result2 = invokeMain("david", "503-709-4866", "503-880-6960", "10/17/2015", "09:38","am", "10/15/2015", "09:42","am", "-textFile", "DavesBill");
@@ -674,17 +615,7 @@ public class Project3Test extends InvokeMainTestCase {
 
     @Test
     public void TestSortingPhoneCallsByNumber(){
-        try{
-            String path = System.getProperty("user.dir") + "/DavesBill.txt";
-            File file = new File(path);
-            file.delete();
-            path = System.getProperty("user.dir") + "/DavesPretty.txt";
-            file = new File(path);
-            file.delete();
-        }
-        catch(Exception ex){
-            System.out.println("Sad Day");
-        }
+        deleteFiles();
         MainMethodResult result33 = invokeMain("david", "503-888-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:52","am", "-textFile", "DavesBill");
 
         MainMethodResult result1 = invokeMain("david", "503-709-4866", "503-880-6960", "10/15/2015", "09:38","am", "10/15/2015", "09:32","am", "-textFile", "DavesBill");
@@ -709,5 +640,52 @@ public class Project3Test extends InvokeMainTestCase {
         System.out.println(result.getOut());
     }
     */
+
+    //Tests from grader from Project 2
+
+    //Test 7
+    @Test
+    public void TestCreateANewDirectory(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley.txt","-print","Project2","123-456-7890","234-567-9081","01/07/2015","07:00", "am","01/17/2015","17:00" ,"pm");
+        //assertEquals(result.getOut().trim(),"");
+        System.out.println(result.getOut());
+        assertEquals(new Integer(0), result.getExitCode());
+
+    }
+    //Test 8-using an existing phone bill file
+    @Test
+    public void TestExistingPhoneBillFile(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley.txt","-print","Project2","123-456-7890","456-789-0123","01/08/2015","08:00", "am","01/08/2015","18:00", "am");
+        //assertEquals(result.getOut().trim(),"");
+        System.out.println(result.getOut());
+        assertEquals(new Integer(0), result.getExitCode());
+
+    }
+    //Test 9 - Different customer name
+    @Test
+    public void TestDifferentCustomerName(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley.txt","DIFFERENT","123-456-7890","789-012-3456","01/09/2015","09:00","am","02/04/2015","16:00","am");
+        //assertEquals(result.getOut().trim(),"");
+        System.out.println(result.getOut());
+        assertEquals(new Integer(0), result.getExitCode());
+
+    }
+    //Test 10 - Malformatted text file
+    @Test
+    public void TestMalformedTextFile(){
+        //Need to create bogus text file
+        /*
+        File dcobbley/bogus.txt:
+        asdfsadfa
+        2r9sadvas
+        lcv913r
+        2r7o9av
+         */
+        MainMethodResult result = invokeMain("-textFile","dcobbley/bogus.txt","Project2","123-456-7890","385-284-2342","01/10/2015","10:00","01/20/2015","20:00");
+        //assertEquals(result.getOut().trim(),"");
+        System.out.println(result.getOut());
+        assertEquals(new Integer(0), result.getExitCode());
+
+    }
 
 }

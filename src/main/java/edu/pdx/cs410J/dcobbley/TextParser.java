@@ -44,8 +44,9 @@ public class TextParser implements PhoneBillParser {
                 throw new IOException("Empty File");
             bill = ParseString(allLines);
         }
-        catch(IOException ex){
+        catch(Exception ex){
             System.out.println("Error Reading From File " + ex.getMessage());
+            System.exit(1);
         }finally {
             try {
                 reader.close();

@@ -54,6 +54,8 @@ public class TextDumper implements PhoneBillDumper {
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.out.println("No such file exists");
+            System.exit(1);
         }
     }
 
