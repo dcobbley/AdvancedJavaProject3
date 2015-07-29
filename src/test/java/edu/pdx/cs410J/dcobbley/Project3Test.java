@@ -688,4 +688,46 @@ public class Project3Test extends InvokeMainTestCase {
 
     }
 
+    //--------------Tests for project 3-------------
+    @Test
+    public void TestProject3_3(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","Project3","123-456-7890","234-567-8901","01/03/2015","11:00","am","01/03/2015","1:00","pm");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_4(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","Project3","123-456-7890","345-134-6134","01/04/2015","10:00","am","01/04/2015","11:30","am");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_5(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","DIFFERENT","123-456-7890","213-124-6311","01/05/2015","5:00","am","01/05/2015","6:14","am");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_6(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","Project3","123-456-7890","153-234-2521","01/07/2015","7:00","am","01/ZZ/2015","7:00","pm");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_7(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","-pretty","-","Project3","123-456-7890","124-351-4234","12/08/2015","8:00","am","12/08/2015","8:15","am");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_8(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","-pretty","-","Project3","123-456-7890","134-124-6234","01/09/2015","9:00","am","01/09/2015","12:34","pm");
+        System.out.println(result.getOut());
+    }
+
+    @Test
+    public void TestProject3_9(){
+        MainMethodResult result = invokeMain("-textFile","dcobbley/dcobbley.txt","-pretty","dcobbley/dcobbley-pretty.txt","Project3","123-456-7890","452-234-2125","01/10/2015","10:00","am","01/10/2015","3:45","pm");
+        System.out.println(result.getOut());
+    }
 }
