@@ -62,6 +62,7 @@ public class Project3Test extends InvokeMainTestCase {
             System.out.println("Sad Day");
         }
     }
+/*
 
   @Test
     public void TestPrintingOutAPhoneCall(){
@@ -631,7 +632,8 @@ public class Project3Test extends InvokeMainTestCase {
 
 
 
-    /*
+    */
+/*
     @Test
     public void Test(){
         MainMethodResult result = invokeMain("");
@@ -639,7 +641,8 @@ public class Project3Test extends InvokeMainTestCase {
         assertEquals(new Integer(0), result.getExitCode());
         System.out.println(result.getOut());
     }
-    */
+    *//*
+
 
     //Tests from grader from Project 2
 
@@ -674,19 +677,22 @@ public class Project3Test extends InvokeMainTestCase {
     @Test
     public void TestMalformedTextFile(){
         //Need to create bogus text file
-        /*
+        */
+/*
         File dcobbley/bogus.txt:
         asdfsadfa
         2r9sadvas
         lcv913r
         2r7o9av
-         */
+         *//*
+
         MainMethodResult result = invokeMain("-textFile","dcobbley/bogus.txt","Project2","123-456-7890","385-284-2342","01/10/2015","10:00","01/20/2015","20:00");
         //assertEquals(result.getOut().trim(),"");
         System.out.println(result.getOut());
         assertEquals(new Integer(0), result.getExitCode());
 
     }
+*/
 
     //--------------Tests for project 3-------------
     @Test

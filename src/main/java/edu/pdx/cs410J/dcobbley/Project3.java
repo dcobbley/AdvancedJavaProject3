@@ -381,7 +381,7 @@ public class Project3 {
 
         }
         catch(IOException ex){
-
+            System.out.println(ex.getMessage());
             System.exit(1);
         }
 
