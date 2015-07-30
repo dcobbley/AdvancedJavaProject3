@@ -19,7 +19,7 @@ public class TextDumper implements PhoneBillDumper {
 
     TextDumper(String path){
         this.path = System.getProperty("user.dir");
-        file = new File(this.path+ "/" + path + ".txt");
+        file = new File(this.path+ "/" + path);
 
     }
 

@@ -23,7 +23,7 @@ public class TextParser implements PhoneBillParser {
 
     TextParser(String path){
         this.path = System.getProperty("user.dir");
-        file = new File(this.path+ "/" + path + ".txt");
+        file = new File(this.path+ "/" + path);
     }
 
     TextParser() throws SystemException{
@@ -51,6 +51,7 @@ public class TextParser implements PhoneBillParser {
             try {
                 reader.close();
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }
